@@ -1,0 +1,334 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="New Vision Academy: Elite CBSE Class 9 & 10 Science and Social Science coaching in Bangalore. Book a free demo class today!">
+  <meta name="keywords" content="CBSE Coaching Bangalore, Class 9 Tuition, Class 10 Tuition, Science Coaching, Social Science Coaching, NEET Foundation, JEE Foundation">
+  <meta name="author" content="New Vision Academy">
+  <title>New Vision Academy - Elite CBSE Coaching in Bangalore</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'royal-blue': '#1E3A8A',
+          },
+        },
+      },
+    }
+  </script>
+</head>
+<body class="bg-gradient-to-b from-royal-blue to-white scroll-smooth">
+  <!-- WhatsApp Floating Button -->
+  <a href="https://wa.me/919876543210?text=Hi!%20Want%20to%20join%20our%20free%20demo%20class?" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition z-50">
+    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.198-.347.223-.644.075-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.297-.347.397-.496.099-.149.124-.347-.025-.496-.149-.149-.669-.669-1.166-.966-.496-.297-1.041-.347-1.139-.496-.099-.149-.099-.347.05-.496.644-1.139 2.252-1.884 3.838-1.884.944 0 1.837.347 2.53.992.693.644 1.041 1.686 1.041 2.828 0 .744-.173 1.462-.471 2.105-.297.644-.767 1.164-1.314 1.611zm4.423-2.678c-.644 3.213-3.59 5.648-6.952 5.648-2.282 0-4.41-1.114-5.797-2.976l-4.073.744 1.14-3.987C4.45 9.744 3.888 7.664 4.532 5.451c.644-2.233 2.678-3.937 4.976-3.937 2.877 0 5.252 2.233 5.896 5.045.099.496.099 1.041 0 1.587zm2.58-1.041C22.94 2.976 17.472.297 11.996.297 5.351.297.05 5.598.05 11.996c0 2.183.595 4.263 1.686 6.048l-1.983 7.184 7.382-1.934c1.686.595 3.515.892 5.351.892 6.645 0 11.946-5.301 11.946-11.946S18.641 1.338 11.996 1.338z"/></svg>
+  </a>
+
+  <!-- Hero Section -->
+  <section class="min-h-screen flex items-center justify-center text-white relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-royal-blue to-white opacity-90 z-0"></div>
+    <div class="container mx-auto px-4 text-center z-10" data-aos="fade-up">
+      <h1 class="text-4xl md:text-6xl font-bold mb-4">Decode Concepts. Build Confidence. Achieve Success.</h1>
+      <p class="text-lg md:text-xl mb-6">Elite CBSE Class 9 & 10 Coaching in Bangalore</p>
+      <div class="flex justify-center gap-4">
+        <a href="#contact" class="bg-white text-royal-blue px-6 py-3 rounded-full font-semibold shadow-lg hover:bg-gray-100 transition transform hover:scale-105 ripple">Book Free Demo</a>
+        <a href="https://youtube.com/@DrDecode" target="_blank" class="bg-transparent border-2 border-white text-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-royal-blue transition transform hover:scale-105">Watch on Dr.Decode</a>
+      </div>
+      <div class="mt-8 flex justify-center gap-4">
+        <img src="https://via.placeholder.com/100x50?text=Google+Reviews" alt="Google Reviews" class="h-10 animate-pulse">
+        <img src="https://via.placeholder.com/100x50?text=YouTube+Subs" alt="YouTube Subscribers" class="h-10 animate-pulse">
+      </div>
+    </div>
+    <div class="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white to-transparent"></div>
+  </section>
+
+  <!-- About Section -->
+  <section class="py-16 bg-white" data-aos="fade-up">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center text-royal-blue mb-8">About New Vision Academy</h2>
+      <p class="text-lg text-gray-700 mb-6 text-center">New Vision Academy is Bangalore’s premier coaching institute, dedicated to empowering CBSE Class 9 & 10 students with concept-driven learning and confidence-building education.</p>
+      <p class="text-lg text-gray-700 mb-6 text-center">Our NEP-aligned philosophy ensures a student-first approach, blending rigorous academics with engaging, practical learning.</p>
+      <div class="bg-white bg-opacity-30 backdrop-blur-lg p-6 rounded-lg shadow-lg text-center max-w-2xl mx-auto">
+        <p class="text-xl italic text-gray-800">"Our mission is to make every student a confident learner, ready to conquer exams and life." – Naveen Sir, Founder</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Faculty Section -->
+  <section class="py-16 bg-gradient-to-b from-white to-gray-100" data-aos="fade-up">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center text-royal-blue mb-8">Meet Our Rockstar Faculty</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-white bg-opacity-50 backdrop-blur-lg p-6 rounded-lg shadow-lg text-center" data-aos="zoom-in">
+          <img src="https://via.placeholder.com/150" alt="Naveen" class="w-24 h-24 rounded-full mx-auto mb-4">
+          <h3 class="text-xl font-semibold">Naveen</h3>
+          <p class="text-gray-600">Social Science</p>
+          <p class="text-gray-700 italic">"History is not just dates; it’s stories that shape us."</p>
+        </div>
+        <div class="bg-white bg-opacity-50 backdrop-blur-lg p-6 rounded-lg shadow-lg text-center" data-aos="zoom-in" data-aos-delay="100">
+          <img src="https://via.placeholder.com/150" alt="Vijay" class="w-24 h-24 rounded-full mx-auto mb-4">
+          <h3 class="text-xl font-semibold">Vijay</h3>
+          <p class="text-gray-600">Maths</p>
+          <p class="text-gray-700 italic">"Math is a puzzle; let’s solve it together."</p>
+        </div>
+        <div class="bg-white bg-opacity-50 backdrop-blur-lg p-6 rounded-lg shadow-lg text-center" data-aos="zoom-in" data-aos-delay="200">
+          <img src="https://via.placeholder.com/150" alt="Janardan" class="w-24 h-24 rounded-full mx-auto mb-4">
+          <h3 class="text-xl font-semibold">Janardan</h3>
+          <p class="text-gray-600">Chemistry</p>
+          <p class="text-gray-700 italic">"Chemistry is the magic of molecules."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Courses Section -->
+  <section class="py-16 bg-white" data-aos="fade-up">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center text-royal-blue mb-8">Courses We Offer</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-white bg-opacity-50 backdrop-blur-lg p-6 rounded-lg shadow-lg hover:shadow-xl transition transform hover:scale-105" data-aos="zoom-in">
+          <h3 class="text-xl font-semibold mb-2">Class 9 CBSE</h3>
+          <p class="text-gray-600 mb-4">Science + Social Science</p>
+          <ul class="text-gray-700 list-disc list-inside">
+            <li>Concept-driven learning</li>
+            <li>Weekly tests & feedback</li>
+            <li>NEP-aligned curriculum</li>
+          </ul>
+        </div>
+        <div class="bg-white bg-opacity-50 backdrop-blur-lg p-6 rounded-lg shadow-lg hover:shadow-xl transition transform hover:scale-105" data-aos="zoom-in" data-aos-delay="100">
+          <h3 class="text-xl font-semibold mb-2">Class 10 CBSE Board Prep</h3>
+          <p class="text-gray-600 mb-4">Science + Social Science</p>
+          <ul class="text-gray-700 list-disc list-inside">
+            <li>Board exam strategies</li>
+            <li>Mock tests & analysis</li>
+            <li>Personalized mentoring</li>
+          </ul>
+        </div>
+        <div class="bg-white bg-opacity-50 backdrop-blur-lg p-6 rounded-lg shadow-lg hover:shadow-xl transition transform hover:scale-105" data-aos="zoom-in" data-aos-delay="200">
+          <h3 class="text-xl font-semibold mb-2">Foundation Courses</h3>
+          <p class="text-gray-600 mb-4">NEET/JEE/NTSE/Olympiads</p>
+          <ul class="text-gray-700 list-disc list-inside">
+            <li>Early prep for competitive exams</li>
+            <li>Conceptual clarity</li>
+            <li>Practice with real problems</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Success Stories Section -->
+  <section class="py-16 bg-gradient-to-b from-gray-100 to-white" data-aos="fade-up">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center text-royal-blue mb-8">Success Stories</h2>
+      <div class="relative">
+        <div class="carousel flex overflow-x-auto snap-x snap-mandatory gap-4">
+          <div class="bg-white bg-opacity-50 backdrop-blur-lg p-6 rounded-lg shadow-lg min-w-[300px] snap-center" itemscope itemtype="https://schema.org/Review">
+            <p class="text-gray-700 italic">"New Vision transformed my son’s grades from 60% to 92%!"</p>
+            <p class="text-gray-600 mt-2" itemprop="author">– Priya, Parent</p>
+            <meta itemprop="reviewRating" content="5">
+          </div>
+          <div class="bg-white bg-opacity-50 backdrop-blur-lg p-6 rounded-lg shadow-lg min-w-[300px] snap-center" itemscope itemtype="https://schema.org/Review">
+            <p class="text-gray-700 italic">"The teachers made Science so fun and easy!"</p>
+            <p class="text-gray-600 mt-2" itemprop="author">– Rohan, Class 10 Topper</p>
+            <meta itemprop="reviewRating" content="5">
+          </div>
+        </div>
+      </div>
+      <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <img src="https://via.placeholder.com/300x200?text=Before+After+Scores" alt="Before After Scores" class="rounded-lg">
+        <img src="https://via.placeholder.com/300x200?text=WhatsApp+Feedback" alt="WhatsApp Feedback" class="rounded-lg">
+      </div>
+    </div>
+  </section>
+
+  <!-- Dr.Decode YouTube Section -->
+  <section class="py-16 bg-white" data-aos="fade-up">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center text-royal-blue mb-8">Dr.Decode – YouTube Learning Hub</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+          <iframe class="w-full h-64 rounded-lg" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Dr.Decode Video" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div class="flex flex-col justify-center">
+          <p class="text-lg text-gray-700 mb-4">Join 50K+ subscribers learning Science & Social Science concepts for free!</p>
+          <a href="https://youtube.com/@DrDecode" target="_blank" class="bg-royal-blue text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-900 transition transform hover:scale-105">Binge Our Free Concept Videos Now</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Section -->
+  <section class="py-16 bg-gradient-to-b from-white to-gray-100" data-aos="fade-up">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center text-royal-blue mb-8">Photo & Video Gallery</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 masonry">
+        <img src="https://via.placeholder.com/300x200?text=Class+Photo" alt="Class Photo" class="rounded-lg">
+        <img src="https://via.placeholder.com/300x300?text=Event" alt="Event" class="rounded-lg">
+        <img src="https://via.placeholder.com/300x150?text=Certificate" alt="Certificate" class="rounded-lg">
+      </div>
+      <div class="mt-8">
+        <video class="w-full h-64 rounded-lg" autoplay muted loop>
+          <source src="https://via.placeholder.com/video.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-16 bg-white" data-aos="fade-up">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center text-royal-blue mb-8">Let’s Talk Learning!</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+          <iframe class="w-full h-64 rounded-lg" src="https://www.google.com/maps/embed?pb=" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div>
+          <form class="bg-white bg-opacity-50 backdrop-blur-lg p-6 rounded-lg shadow-lg">
+            <input type="text" placeholder="Name" class="w-full p-3 mb-4 rounded-lg border" required>
+            <input type="email" placeholder="Email" class="w-full p-3 mb-4 rounded-lg border" required>
+            <input type="text" placeholder="Class" class="w-full p-3 mb-4 rounded-lg border" required>
+            <textarea placeholder="Message" class="w-full p-3 mb-4 rounded-lg border" rows="4" required></textarea>
+            <button type="submit" class="bg-royal-blue text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-900 transition transform hover:scale-105">Send Message</button>
+          </form>
+        </div>
+      </div>
+      <div class="mt-8 text-center">
+        <p class="text-lg text-gray-700">Phone: +91 9876543210</p>
+        <p class="text-lg text-gray-700">Email: contact@newvisionacademy.com</p>
+        <div class="flex justify-center gap-4 mt-4">
+          <a href="#" class="text-royal-blue hover:text-blue-900"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-8 bg-royal-blue text-white text-center">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-center gap-4 mb-4">
+        <a href="#hero" class="hover:underline">Home</a>
+        <a href="#about" class="hover:underline">About</a>
+        <a href="#courses" class="hover:underline">Courses</a>
+        <a href="#contact" class="hover:underline">Contact</a>
+        <a href="#privacy" class="hover:underline">Privacy Policy</a>
+        <a href="#terms" class="hover:underline">Terms</a>
+      </div>
+      <p>Built with ❤️ by New Vision Academy</p>
+    </div>
+  </footer>
+
+  <!-- JavaScript for Animations and WhatsApp Popup -->
+  <script>
+    // Initialize AOS for scroll animations
+    AOS.init({ duration: 1000, once: true });
+
+    // Ripple effect for CTA buttons
+    document.querySelectorAll('.ripple').forEach(button => {
+      button.addEventListener('click', function(e) {
+        const circle = document.createElement('span');
+        const diameter = Math.max(button.clientWidth, button.clientHeight);
+        const radius = diameter / 2;
+        circle.style.width = circle.style.height = `${diameter}px`;
+        circle.style.left = `${e.clientX - button.offsetLeft - radius}px`;
+        circle.style.top = `${e.clientY - button.offsetTop - radius}px`;
+        circle.classList.add('absolute', 'bg-white', 'opacity-50', 'rounded-full', 'animate-ripple');
+        button.appendChild(circle);
+        setTimeout(() => circle.remove(), 600);
+      });
+    });
+
+    // WhatsApp Popup after 20 seconds
+    setTimeout(() => {
+      if (!sessionStorage.getItem('whatsapp_popup_shown')) {
+        alert('Hi! Want to join our free demo class?');
+        sessionStorage.setItem('whatsapp_popup_shown', 'true');
+      }
+    }, 20000);
+
+    // Parallax effect
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      document.querySelectorAll('.parallax').forEach(el => {
+        const speed = el.getAttribute('data-speed') || 0.5;
+        el.style.backgroundPositionY = -(scrolled * speed) + 'px';
+      });
+    });
+  </script>
+  <style>
+    .animate-ripple {
+      animation: ripple 0.6s linear;
+    }
+    @keyframes ripple {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+    .masonry {
+      column-gap: 1.5rem;
+      column-count: 1;
+    }
+    @media (min-width: 640px) {
+      .masonry {
+        column-count: 2;
+      }
+    }
+    @media (min-width: 768px) {
+      .masonry {
+        column-count: 3;
+      }
+    }
+    .carousel {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .carousel::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+</body>
+</html>
