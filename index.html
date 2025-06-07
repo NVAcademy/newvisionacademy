@@ -1,0 +1,373 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Vision Academy - Premier CBSE Class 9 & 10 Coaching in Bangalore</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <style>
+    body {
+      background-color: #f8fafc;
+      color: #0a1d4d; /* Deep Navy Blue */
+    }
+    .gradient-bg {
+      background: linear-gradient(135deg, #0a1d4d 0%, #1e3a8a 100%); /* Deeper blue gradient */
+    }
+    .cta-button {
+      transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .cta-button:hover {
+      transform: scale(1.05);
+      background-color: #1e3a8a;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    .section-padding {
+      padding: 5rem 1rem;
+    }
+    .card {
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+    .card:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    }
+    .nav-link {
+      transition: color 0.3s ease;
+    }
+    .nav-link:hover {
+      color: #facc15; /* Yellow accent for hover */
+    }
+    .smooth-scroll {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body class="smooth-scroll">
+  <!-- Navigation -->
+  <nav class="gradient-bg text-white shadow-lg sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold">New Vision Academy</h1>
+      <div class="space-x-6">
+        <a href="#home" class="nav-link font-semibold">Home</a>
+        <a href="#about" class="nav-link font-semibold">About</a>
+        <a href="#courses" class="nav-link font-semibold">Courses</a>
+        <a href="#contact" class="nav-link font-semibold">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="home" class="gradient-bg text-white text-center section-padding">
+    <div class="container mx-auto">
+      <h1 class="text-4xl md:text-6xl font-extrabold mb-4 animate-gsap" data-gsap="fadeInDown">
+        Master Concepts. Boost Confidence. Excel in CBSE.
+      </h1>
+      <p class="text-xl md:text-2xl mb-8 animate-gsap" data-gsap="fadeInUp">
+        Join Bangalore’s #1 Coaching for CBSE Class 9 & 10
+      </p>
+      <div class="space-x-4">
+        <a href="#contact" class="inline-block bg-yellow-400 text-blue-900 font-bold py-3 px-8 rounded-full cta-button">
+          Book Your Free Demo Today
+        </a>
+        <a href="https://youtube.com/@DrDecode" target="_blank" class="inline-block bg-white text-blue-900 font-bold py-3 px-8 rounded-full cta-button">
+          Explore Dr.Decode
+        </a>
+      </div>
+      <img src="https://ai-image-service.com/students-studying-in-classroom" alt="Students Studying" class="mt-10 mx-auto rounded-xl shadow-2xl max-w-4xl w-full animate-gsap" data-gsap="zoomIn">
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="bg-white section-padding">
+    <div class="container mx-auto text-center">
+      <h2 class="text-4xl font-bold mb-6 text-blue-900 animate-gsap" data-gsap="fadeIn">Why Choose New Vision Academy?</h2>
+      <p class="text-lg mb-6 max-w-3xl mx-auto">
+        At New Vision Academy, we empower CBSE Class 9 & 10 students with concept-driven learning, personalized mentoring, and a passion for success. Our NEP-aligned curriculum, expert faculty, and proven track record make us Bangalore’s top choice for academic excellence.
+      </p>
+      <p class="text-lg font-semibold italic mb-8 text-blue-900">
+        "We don’t just teach; we inspire students to conquer exams and build a brighter future." – Naveen Sir, Founder
+      </p>
+      <img src="https://ai-image-service.com/modern-academy-campus" alt="Academy Campus" class="mx-auto rounded-xl shadow-xl max-w-2xl w-full animate-gsap" data-gsap="fadeInUp">
+    </div>
+  </section>
+
+  <!-- Faculty Section -->
+  <section id="faculty" class="gradient-bg text-white section-padding">
+    <div class="container mx-auto">
+      <h2 class="text-4xl font-bold text-center mb-10 animate-gsap" data-gsap="fadeIn">Our Expert Faculty</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="card bg-white p-8 rounded-xl shadow-lg text-center animate-gsap" data-gsap="fadeInLeft">
+          <img src="https://ai-image-service.com/teacher-naveen-portrait" alt="Naveen" class="w-40 h-40 mx-auto rounded-full mb-4 object-cover">
+          <h3 class="text-xl font-semibold text-blue-900">Naveen</h3>
+          <p class="text-gray-600">Social Science Expert</p>
+          <p class="text-gray-600 italic">"History is the story of us – let’s make it unforgettable."</p>
+        </div>
+        <div class="card bg-white p-8 rounded-xl shadow-lg text-center animate-gsap" data-gsap="fadeInUp">
+          <img src="https://ai-image-service.com/teacher-vijay-portrait" alt="Vijay" class="w-40 h-40 mx-auto roundedicom mb-4 object-cover">
+          <h3 class="text-xl font-semibold text-blue-900">Vijay</h3>
+          <p class="text-gray-600">Mathematics Guru</p>
+          <p class="text-gray-600 italic">"Every math problem is a puzzle waiting to be solved."</p>
+        </div>
+        <div class="card bg-white p-8 rounded-xl shadow-lg text-center animate-gsap" data-gsap="fadeInRight">
+          <img src="https://ai-image-service.com/teacher-janardan-portrait" alt="Janardan" class="w-40 h-40 mx-auto rounded-full mb-4 object-cover">
+          <h3 class="text-xl font-semibold text-blue-900">Janardan</h3>
+          <p class="text-gray-600">Chemistry Wizard</p>
+          <p class="text-gray-600 italic">"Discover the magic of molecules with me."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Courses Section -->
+  <section id="courses" class="bg-white section-padding">
+    <div class="container mx-auto">
+      <h2 class="text-4xl font-bold text-center mb-10 text-blue-900 animate-gsap" data-gsap="fadeIn">Our Courses</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="card bg-blue-50 p-8 rounded-xl shadow-lg animate-gsap" data-gsap="fadeInLeft">
+          <h3 class="text-xl font-semibold text-blue-900 mb-3">Class 9 CBSE</h3>
+          <p class="text-gray-600 mb-4">Science + Social Science</p>
+          <ul class="list-disc list-inside text-gray-600 mb-6">
+            <li>Concept-focused learning</li>
+            <li>Weekly assessments with feedback</li>
+            <li>NEP-aligned curriculum</li>
+          </ul>
+          <a href="#contact" class="inline-block bg-blue-900 text-white py-2 px-6 rounded-full cta-button">Enroll Now</a>
+        </div>
+        <div class="card bg-blue-50 p-8 rounded-xl shadow-lg animate-gsap" data-gsap="fadeInUp">
+          <h3 class="text-xl font-semibold text-blue-900 mb-3">Class 10 CBSE Board Prep</h3>
+          <p class="text-gray-600 mb-4">Science + Social Science</p>
+          <ul class="list-disc list-inside text-gray-600 mb-6">
+            <li>Proven board exam strategies</li>
+            <li>Full-length mock tests</li>
+            <li>1:1 mentoring sessions</li>
+          </ul>
+          <a href="#contact" class="inline-block bg-blue-900 text-white py-2 px-6 rounded-full cta-button">Enroll Now</a>
+        </div>
+        <div class="card bg-blue-50 p-8 rounded-xl shadow-lg animate-gsap" data-gsap="fadeInRight">
+          <h3 class="text-xl font-semibold text-blue-900 mb-3">Foundation Courses</h3>
+          <p class="text-gray-600 mb-4">NEET/JEE/NTSE/Olympiads</p>
+          <ul class="list-disc list-inside text-gray-600 mb-6">
+            <li>Early prep for competitive exams</li>
+            <li>Deep conceptual clarity</li>
+            <li>Real-world problem practice</li>
+          </ul>
+          <a href="#contact" class="inline-block bg-blue-900 text-white py-2 px-6 rounded-full cta-button">Enroll Now</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Success Stories Section -->
+  <section id="success" class="gradient-bg text-white section-padding">
+    <div class="container mx-auto">
+      <h2 class="text-4xl font-bold text-center mb-10 animate-gsap" data-gsap="fadeIn">Our Success Stories</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="card bg-white p-8 rounded-xl shadow-lg animate-gsap" data-gsap="fadeInLeft">
+          <p class="text-lg italic mb-4 text-gray-600">"New Vision Academy boosted my daughter’s confidence, taking her from 65% to 95% in CBSE Class 10!"</p>
+          <p class="font-semibold text-blue-900">– Anjali, Parent</p>
+        </div>
+        <div class="card bg-white p-8 rounded-xl shadow-lg animate-gsap" data-gsap="fadeInRight">
+          <p class="text-lg italic mb-4 text-gray-600">"The engaging classes made Science my favorite subject!"</p>
+          <p class="font-semibold text-blue-900">– Arjun, Class 10 Topper</p>
+        </div>
+      </div>
+      <div class="text-center mt-10">
+        <a href="#contact" class="inline-block bg-yellow-400 text-blue-900 font-bold py-3 px-8 rounded-full cta-button animate-gsap" data-gsap="pulse">
+          Become Our Next Success Story!
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- YouTube Section -->
+  <section id="youtube" class="bg-white section-padding">
+    <div class="container mx-auto text-center">
+      <h2 class="text-4xl font-bold mb-6 text-blue-900 animate-gsap" data-gsap="fadeIn">Dr.Decode – Free Learning Hub</h2>
+      <p class="text-lg mb-8 max-w-2xl mx-auto">Join 75K+ subscribers mastering Science & Social Science with our free, engaging YouTube videos!</p>
+      <div class="mb-8">
+        <iframe class="mx-auto rounded-xl shadow-xl max-w-4xl w-full" width="560" height="315" src="https://www.youtube.com/embed/drdecode-sample-lesson" frameborder="0" allowfullscreen></iframe>
+      </div>
+      <a href="https://youtube.com/@DrDecode" target="_blank" class="inline-block bg-red-600 text-white font-bold py-3 px-8 rounded-full cta-button">Watch Free Lessons Now</a>
+    </div>
+  </section>
+
+  <!-- Gallery Section -->
+  <section id="gallery" class="gradient-bg text-white section-padding">
+    <div class="container mx-auto">
+      <h2 class="text-4xl font-bold text-center mb-10 animate-gsap" data-gsap="fadeIn">Our Vibrant Community</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <img src="https://ai-image-service.com/classroom-learning-session" alt="Classroom Session" class="rounded-xl shadow-xl w-full object-cover animate-gsap" data-gsap="zoomIn">
+        <img src="https://ai-image-service.com/student-science-experimentmatplotlib alt="Science Experiment" class="rounded-xl shadow-xl w-full object-cover animate-gsap" data-gsap="zoomIn" data-gsap-delay="0.2">
+        <img src="https://ai-image-service.com/award-ceremony-students" alt="Award Ceremony" class="rounded-xl shadow-xl w-full object-cover animate-gsap" data-gsap="zoomIn" data-gsap-delay="0.4">
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="bg-white section-padding">
+    <div class="container mx-auto text-center">
+      <h2 class="text-4xl font-bold mb-6 text-blue-900 animate-gsap" data-gsap="fadeIn">Start Your Journey Today!</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div>
+          <img src="https://ai-image-service.com/happy-students-learning" alt="Happy Students" class="mx-auto rounded-xl shadow-xl max-w-md w-full animate-gsap" data-gsap="fadeInLeft">
+        </div>
+        <div>
+          <form class="space-y-5">
+            <input type="text" placeholder="Your Name" class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900">
+            <input type="email" placeholder="Your Email" class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900">
+            <input type="tel" placeholder="Your Phone" class="w-full p-4 border border-gray-300 rounded-lgn focus:outline-none focus:ring-2 focus:ring-blue-900">
+            <textarea placeholder="Your Message" class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900" rows="5"></textarea>
+            <button type="button" class="bg-blue-900 text-white font-bold py-3 px-8 rounded-full cta-button">Send Message</button>
+          </form>
+        </div>
+      </div>
+      <div class="mt-10 text-lg text-blue-900">
+        <p><strong>Phone:</strong> +91 9876543210</p>
+        <p><strong>Email:</strong> contact@newvisionacademy.com</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="gradient-bg text-white text-center py-8">
+    <div class="container mx-auto">
+      <div class="flex justify-center space-x-6 mb-6">
+        <a href="#home" class="nav-link font-semibold">Home</a>
+        <a href="#about" class="nav-link font-semibold">About</a>
+        <a href="#courses" class="nav-link font-semibold">Courses</a>
+        <a href="#contact" class="nav-link font-semibold">Contact</a>
+        <a href="#privacy" class="nav-link font-semibold">Privacy Policy</a>
+        <a href="#terms" class="nav-link font-semibold">Terms</a>
+      </div>
+      <p>Built with ❤️ by New Vision Academy | Empowering Futures Since 2015</p>
+    </div>
+  </footer>
+
+  <!-- GSAP Animations -->
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.querySelectorAll('.animate-gsap').forEach((element) => {
+      const animation = element.getAttribute('data-gsap');
+      const delay = element.getAttribute('data-gsap-delay') || 0;
+
+      if (animation === 'fadeIn') {
+        gsap.from(element, {
+          opacity: 0,
+          y: 50,
+          duration: 1,
+          delay: delay,
+          scrollTrigger: {
+            trigger: element,
+            start: 'top 80%',
+          },
+        });
+      } else if (animation === 'fadeInDown') {
+        gsap.from(element, {
+          opacity: 0,
+          y: -50,
+          duration: 1,
+          delay: delay,
+          scrollTrigger: {
+            trigger: element,
+            start: 'top 80%',
+          },
+        });
+      } else if (animation === 'fadeInUp') {
+        gsap.from(element, {
+          opacity: 0,
+          y: 50,
+          duration: 1,
+          delay: delay,
+          scrollTrigger: {
+            trigger: element,
+            start: 'top 80%',
+          },
+        });
+      } else if (animation === 'fadeInLeft') {
+        gsap.from(element, {
+          opacity: 0,
+          x: -50,
+          duration: 1,
+          delay: delay,
+          scrollTrigger: {
+            trigger: element,
+            start: 'top 80%',
+          },
+        });
+      } else if (animation === 'fadeInRight') {
+        gsap.from(element, {
+          opacity: 0,
+          x: 50,
+          duration: 1,
+          delay: delay,
+          scrollTrigger: {
+            trigger: element,
+            start: 'top 80%',
+          },
+        });
+      } else if (animation === 'zoomIn') {
+        gsap.from(element, {
+          opacity: 0,
+          scale: 0.8,
+          duration: 1,
+          delay: delay,
+          scrollTrigger: {
+            trigger: element,
+            start: 'top 80%',
+          },
+        });
+      } else if (animation === 'pulse') {
+        gsap.to(element, {
+          scale: 1.05,
+          duration: 1,
+          repeat: -1,
+          yoyo: true,
+          ease: 'power1.inOut',
+        });
+      }
+    });
+  </script>
+</body>
+</html>
